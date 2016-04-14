@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">TitanRecyclerView</string>
+    <string name="app_name">demo</string>
+    <string name="delete">删除</string>
 </resources>

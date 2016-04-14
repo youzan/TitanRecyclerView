@@ -2,13 +2,17 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 14
+        versionName "0.2.4"
     }
     buildTypes {
         release {
@@ -20,6 +24,33 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:+'
+}
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: 'http://maven.qima-inc.com/content/repositories/snapshots/') {
+                authentication(userName: 'snapshots', password: 'snapshots')
+            }
+            repository(url: 'http://maven.qima-inc.com/content/repositories/releases/') {
+                authentication(userName: 'username', password: 'password')
+            }
+            pom.version = '0.2.4-SNAPSHOT'
+            pom.groupId = 'com.youzan.mobile'
+            pom.artifactId = "attackview"
+        }
+    }
+}
+
+task clearJar(type: Delete) {
+    delete 'build/outputs/attackview.jar'
+}
+
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/outputs/')
+    include('classes.jar')
+    rename ('classes.jar', 'attackview.jar')
 }

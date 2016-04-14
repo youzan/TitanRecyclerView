@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/linearv"
+        android:title="线性纵向" />
+    <item
+        android:id="@+id/linearh"
+        android:title="线性横向" />
+    <item
+        android:id="@+id/grid"
+        android:title="网格式" />
+    <item
+        android:id="@+id/staggered"
+        android:title="瀑布式" />
+</menu>
