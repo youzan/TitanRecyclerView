@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="attackview">
+    <declare-styleable name="TitanRecyclerView">
         <attr name="layout_empty" format="reference"/>
         <attr name="layout_more" format="reference"/>
         <attr name="scrollbarStyle">
@@ -10,7 +10,6 @@
             <flag name="outsideInset" value="0x03000000"/>
         </attr>
 
-        <!--<attr name="mainLayoutId" format="reference"/>-->
     </declare-styleable>
 
     <declare-styleable name="ProgressWheel">

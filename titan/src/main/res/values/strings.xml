@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">attackview</string>
+    <string name="app_name">TitanRecyclerView</string>
     <string name="empty_text">没有内容</string>
 </resources>

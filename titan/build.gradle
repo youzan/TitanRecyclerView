@@ -27,23 +27,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:+'
 }
 
-apply plugin: 'maven'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            snapshotRepository(url: 'http://maven.qima-inc.com/content/repositories/snapshots/') {
-                authentication(userName: 'snapshots', password: 'snapshots')
-            }
-            repository(url: 'http://maven.qima-inc.com/content/repositories/releases/') {
-                authentication(userName: 'username', password: 'password')
-            }
-            pom.version = '0.2.4-SNAPSHOT'
-            pom.groupId = 'com.youzan.mobile'
-            pom.artifactId = "attackview"
-        }
-    }
-}
-
 task clearJar(type: Delete) {
     delete 'build/outputs/attackview.jar'
 }

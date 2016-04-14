@@ -15,8 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url 'http://maven.qima-inc.com/content/repositories/snapshots' }
-        maven { url 'http://maven.qima-inc.com/content/repositories/releases/' }
+        maven { url "https://jitpack.io" }
     }
 }
 

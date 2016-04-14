@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.youzan.titan.sample">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.youzan.titan.sample">
 
     <application
         android:allowBackup="true"

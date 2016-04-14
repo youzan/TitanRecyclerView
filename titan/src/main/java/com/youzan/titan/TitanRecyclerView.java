@@ -87,12 +87,12 @@ public class TitanRecyclerView extends RecyclerView {
     }
 
     protected void initAttrs(AttributeSet attrs) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.attackview);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TitanRecyclerView);
 
         try {
-            mLoadMoreResourceId = typedArray.getResourceId(R.styleable.attackview_layout_more,
+            mLoadMoreResourceId = typedArray.getResourceId(R.styleable.TitanRecyclerView_layout_more,
                     R.layout.layout_default_more_view);
-            mScrollbarStyle = typedArray.getInt(R.styleable.attackview_scrollbarStyle, -1);
+            mScrollbarStyle = typedArray.getInt(R.styleable.TitanRecyclerView_scrollbarStyle, -1);
         } finally {
             typedArray.recycle();
         }
