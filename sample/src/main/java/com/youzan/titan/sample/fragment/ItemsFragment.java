@@ -23,15 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * description
- *
  * @author monster @Hangzhou Youzan Technology Co.Ltd
  * @date 16/3/13
  */
 public class ItemsFragment extends Fragment {
-    private TitanRecyclerView mAttackView;
+    private TitanRecyclerView mTitanRecyclerView;
     private ItemsAdapter mAdapter;
-    private List<DemoItem> mDatas;
+    private List<DemoItem> mData;
 
     public static ItemsFragment newInstance() {
         return new ItemsFragment();
@@ -45,27 +43,28 @@ public class ItemsFragment extends Fragment {
 
     private void loadItems() {
         String[] items = getActivity().getResources().getStringArray(R.array.items);
-        mDatas = new ArrayList<>();
+        mData = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
-            mDatas.add(new DemoItem(i, items[i]));
+            mData.add(new DemoItem(i, items[i]));
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_normal, container, false);
-        mAttackView = (TitanRecyclerView) rootView.findViewById(R.id.attackview);
+        mTitanRecyclerView = (TitanRecyclerView) rootView.findViewById(R.id.titan_recycler_view);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAttackView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTitanRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ItemsAdapter();
-        mAdapter.setData(mDatas);
-        mAttackView.setAdapter(mAdapter);
-        mAttackView.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        mAdapter.setData(mData);
+        mTitanRecyclerView.setAdapter(mAdapter);
+        mTitanRecyclerView.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View view, int position, long id) {
                 Log.d("NormalTextViewHolder", "onClick--> position = " + position);

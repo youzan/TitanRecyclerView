@@ -18,7 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Monster' RecyclerView
+ * TitanRecyclerView is beyond RecyclerView.
  *
  * @author monster @Hangzhou Youzan Technology Co.Ltd
  * @date 16/3/10
@@ -27,8 +27,7 @@ public class TitanRecyclerView extends RecyclerView {
 
     @IntDef({TOP, BOTTOM, LEFT, RIGHT})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Orientation {
-    }
+    public @interface Orientation { }
 
     public static final int TOP = 1;
     public static final int BOTTOM = 2;

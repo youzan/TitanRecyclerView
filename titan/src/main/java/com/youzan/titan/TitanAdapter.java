@@ -321,7 +321,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void setData(@NonNull  List<T> data) {
-
+        mData = data;
         notifyDataSetChanged();
     }
 

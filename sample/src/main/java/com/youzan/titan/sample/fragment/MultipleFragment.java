@@ -48,7 +48,7 @@ public class MultipleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_normal, container, false);
-        mAttackView = (TitanRecyclerView)rootView.findViewById(R.id.attackview);
+        mAttackView = (TitanRecyclerView)rootView.findViewById(R.id.titan_recycler_view);
         return rootView;
     }
 
