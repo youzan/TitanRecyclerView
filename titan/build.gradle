@@ -27,13 +27,3 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:+'
 }
 
-task clearJar(type: Delete) {
-    delete 'build/outputs/attackview.jar'
-}
-
-task makeJar(type: Copy) {
-    from('build/intermediates/bundles/release/')
-    into('build/outputs/')
-    include('classes.jar')
-    rename ('classes.jar', 'attackview.jar')
-}
