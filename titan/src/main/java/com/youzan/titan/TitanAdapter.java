@@ -135,7 +135,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * 使用attackview专用getItemViewType
+     * 使用TitanRecyclerView专用getItemViewType
      *
      * @param position
      * @return
