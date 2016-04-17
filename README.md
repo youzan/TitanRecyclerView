@@ -5,7 +5,9 @@ RecyclerView 及 Adapter 的封装
 
 Demo
 ---
-![](https://github.com/youzan/TitanRecyclerView/tree/master/gif/ezgif.com-resize (1).gif)![](https://github.com/youzan/TitanRecyclerView/tree/master/gif/ezgif.com-resize.gif)
+![](https://github.com/youzan/TitanRecyclerView/blob/master/gif/demogif1.gif)
+
+![](https://github.com/youzan/TitanRecyclerView/blob/master/gif/demogif2.gif)
 
 TitanRecyclerView 功能
 ---
