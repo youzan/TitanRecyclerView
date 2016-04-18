@@ -5,12 +5,11 @@ RecyclerView 及 Adapter 的封装
 
 ## Demo
 
-![](https://github.com/youzan/TitanRecyclerView/blob/master/gif/demogif1.gif)
+![](art/demo1.gif)
 
-![](https://github.com/youzan/TitanRecyclerView/blob/master/gif/demogif2.gif)
+![](art/demo2.gif)
 
 ## TitanRecyclerView 功能
-
 
 * loadmore监听
 * 自定义加载样式
@@ -28,6 +27,5 @@ RecyclerView 及 Adapter 的封装
 [Go to Wiki](https://github.com/youzan/TitanRecyclerView/wiki)
 
 ## 依赖
-
 
 not yet published :(
