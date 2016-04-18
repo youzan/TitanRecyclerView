@@ -3,17 +3,20 @@ TitanRecyclerView
 
 A powerfull extension for `RecyclerView` and `RecyclerView.Adapter`.
 
-## Demo
+Demo
+---
 
 ![](art/demo1.gif) ![](art/demo2.gif)
 
-## Dependencies
+Dependencies
+---
 
 ```groovy
 compile 'com.youzan:titan:0.1.0'
 ```
 
-## Features
+Features
+---
 
 ### TitanRecyclerViev
 * Pull up to load more
@@ -28,7 +31,8 @@ compile 'com.youzan:titan:0.1.0'
 
 ## Usage
 
-### Use `TitanRecyclerView` in xml.
+**Use `TitanRecyclerView` in xml.**
+
 ```xml
 <com.youzan.titan.TitanRecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,7 +43,7 @@ compile 'com.youzan:titan:0.1.0'
     android:layout_centerHorizontal="true"/>
 ```
 
-### Use `QuickAdapter' 
+**Use `QuickAdapter`.**
 
 ```java
 mAdapter = new QuickAdapter<String>(R.layout.text_item, mData) {
@@ -52,7 +56,7 @@ mAdapter = new QuickAdapter<String>(R.layout.text_item, mData) {
 
 ```
 
-### Use `TitanAdapter`
+**Use `TitanAdapter`.**
 
 ```java
 public class ItemsAdapter extends TitanAdapter<DemoItem> {
