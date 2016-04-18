@@ -1,4 +1,4 @@
-TitanRecyclerView
+TitanRecyclerView [![Build Status](https://api.travis-ci.org/youzan/TitanRecyclerView.svg)](https://travis-ci.org/youzan/TitanRecyclerView)
 ===
 
 A powerfull extension for `RecyclerView` and `RecyclerView.Adapter`.
