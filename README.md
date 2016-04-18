@@ -1,7 +1,7 @@
 TitanRecyclerView [![Build Status](https://api.travis-ci.org/youzan/TitanRecyclerView.svg)](https://travis-ci.org/youzan/TitanRecyclerView)
 ===
 
-A powerfull extension for `RecyclerView` and `RecyclerView.Adapter`.
+A VERY VERY powerfull extension for `RecyclerView`.
 
 Demo
 ---
@@ -22,9 +22,6 @@ Features
 * Pull up to load more
 * Customize loading style
 * recyclerview scroll listener
-
-### TitanAdapter
-
 * One data source
 * add header view 
 * add footer view
