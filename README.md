@@ -28,4 +28,6 @@ RecyclerView 及 Adapter 的封装
 
 ## 依赖
 
-not yet published :(
+```groovy
+compile 'com.youzan:titan:0.1.0'
+```

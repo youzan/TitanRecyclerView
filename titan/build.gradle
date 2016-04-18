@@ -1,4 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+version = "0.1.0"
 
 android {
     compileSdkVersion 23
@@ -12,7 +16,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 14
-        versionName "0.2.4"
+        versionName version
     }
     buildTypes {
         release {
@@ -22,8 +26,86 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:recyclerview-v7:+'
+def siteUrl = "https://github.com/youzan/TitanRecyclerView"
+def gitUrl = "https://github.com/youzan/TitanRecyclerView.git"
+group = "com.youzan"
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+
+                // Add your description here
+                name 'TitanRecyclerView - Awesome extension for RecyclerView'
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://github.com/youzan/TitanRecyclerView/blob/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'lyndonchin'
+                        name 'liangfei'
+                        email 'njliangfei@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
 }
 
+dependencies {
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    // archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+
+    pkg {
+        repo = "maven"
+        name = "titan-recyclerview"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["MIT"]
+        publish = true
+    }
+}
