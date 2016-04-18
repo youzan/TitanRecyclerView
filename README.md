@@ -88,3 +88,14 @@ public class ItemsAdapter extends TitanAdapter<DemoItem> {
   }
 }
 ```
+
+Acknowledgement
+---
+
+* [ProgressWheel](https://github.com/Todd-Davies/ProgressWheel) by Todd-Davies
+
+
+License
+---
+
+> MIT
