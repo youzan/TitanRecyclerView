@@ -98,4 +98,4 @@ Acknowledgement
 License
 ---
 
-> MIT
+MIT
