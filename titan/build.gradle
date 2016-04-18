@@ -26,6 +26,11 @@ android {
     }
 }
 
+dependencies {
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+}
+
+/*
 def siteUrl = "https://github.com/youzan/TitanRecyclerView"
 def gitUrl = "https://github.com/youzan/TitanRecyclerView.git"
 group = "com.youzan"
@@ -67,9 +72,6 @@ install {
     }
 }
 
-dependencies {
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -109,3 +111,4 @@ bintray {
         publish = true
     }
 }
+*/
