@@ -3,6 +3,7 @@ package com.youzan.titan;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -55,7 +56,7 @@ public class TitanRecyclerView extends RecyclerView {
     private ItemClickSupport.OnItemLongClickListener mOnItemLongClickListener;
 
 
-    protected int mLoadMoreResourceId;
+    @LayoutRes protected int mLoadMoreResourceId;
     protected View mCustomLoadMoreView;
     protected int mScrollbarStyle;
     private boolean mHasMore;

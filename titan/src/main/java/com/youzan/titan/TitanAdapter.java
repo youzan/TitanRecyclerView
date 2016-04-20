@@ -1,5 +1,6 @@
 package com.youzan.titan;
 
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,43 +20,58 @@ import java.util.List;
 public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
 
-    private final static int MORE_TYPE = 10000;
-    private final static int HEADER_TYPE = 10001;
-    private final static int FOOTER_TYPE = 10002;
+    private final static int HEADER_TYPE = Integer.MIN_VALUE;
+    private final static int FOOTER_TYPE = Integer.MAX_VALUE - 1;
+    private final static int MORE_TYPE = Integer.MAX_VALUE;
 
-    private View customLoadMoreView;
-    private View headerView;
-    private View footerView;
-    private int loadMoreResourceId;
-    private boolean hasMore = false;
-    private boolean hasHeader = false;
-    private boolean hasFooter = false;
-    private ItemClickSupport itemClickSupport;
+    private View mCustomLoadMoreView;
+    private View mHeaderView;
+    private View mFooterView;
+
+    @LayoutRes private int mLoadMoreResId;
+
+    private boolean mHasMore;
+    private boolean mHasHeader;
+    private boolean mHasFooter;
 
     protected List<T> mData;
 
+    private ItemClickSupport mItemClickSupport;
+
     /**
-     * 绑定itemlayout
-     *
-     * @param parent
-     * @return
+     * Create view holder according to view types.
+     * @param parent the parent view group
+     * @param viewType the view type
+     * @return the created view holder
      */
     protected abstract RecyclerView.ViewHolder createVHolder(ViewGroup parent, int viewType);
 
     /**
-     * 设置数据，展现内容
-     *
-     * @param holder
-     * @param position
+     * Show item view.
+     * @param holder the view holder
+     * @param position the position of the view holder
      */
     protected abstract void showItemView(RecyclerView.ViewHolder holder, int position);
 
+    /**
+     * Get adpater item id by position.
+     * @param position item position
+     * @return adapter item id
+     */
     public abstract long getAdapterItemId(int position);
 
+    /**
+     *  Get the count of adapter items.
+     * @return the count of adapter items
+     */
     public int getAdapterItemCount() {
         return null != mData ? mData.size() : 0;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
@@ -71,32 +87,35 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         return holder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof LoadMoreViewHolder) {
-            holder.itemView.setVisibility(getItemCount() > getCustomsNum() && hasMore ? View.VISIBLE : View.GONE);
+            holder.itemView.setVisibility(getItemCount() > getCustomsNum() && mHasMore ? View.VISIBLE : View.GONE);
         } else if (holder instanceof HeaderViewHolder) {
-            holder.itemView.setVisibility(hasHeader ? View.VISIBLE : View.GONE);
+            holder.itemView.setVisibility(mHasHeader ? View.VISIBLE : View.GONE);
         } else if (holder instanceof FooterViewHolder) {
-            holder.itemView.setVisibility(hasFooter ? View.VISIBLE : View.GONE);
+            holder.itemView.setVisibility(mHasFooter ? View.VISIBLE : View.GONE);
         } else {
             holder.itemView.setOnClickListener(this);
             holder.itemView.setOnLongClickListener(this);
-            showItemView(holder, hasHeader ? position - 1 : position);
+            showItemView(holder, mHasHeader ? position - 1 : position);
         }
     }
 
     @Override
     public int getItemCount() {
         int customTypeCount = 0;
-        if (hasMore) {
+        if (mHasMore) {
             customTypeCount++;
         }
-        if (hasHeader) {
+        if (mHasHeader) {
             customTypeCount++;
         }
-        if (hasFooter) {
+        if (mHasFooter) {
             customTypeCount++;
         }
         return getAdapterItemCount() + customTypeCount;
@@ -104,10 +123,10 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public long getItemId(int position) {
-        if (hasMore && 0 != position && getItemCount() - 1 == position) {
+        if (mHasMore && 0 != position && getItemCount() - 1 == position) {
             return -1;
         }
-        return getAdapterItemId(hasHeader ? position - 1 : position);
+        return getAdapterItemId(mHasHeader ? position - 1 : position);
     }
 
     public T getItem(int position) {
@@ -116,22 +135,22 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemViewType(int position) {
-        if (hasHeader && 0 == position) {
+        if (mHasHeader && 0 == position) {
             return HEADER_TYPE;
         }
 
-        if (hasFooter && getItemCount() - 1 == position) {
+        if (mHasFooter && getItemCount() - 1 == position) {
             return FOOTER_TYPE;
         }
 
-        if (hasMore) {
-            if (!hasFooter && getItemCount() - 1 == position) {
+        if (mHasMore) {
+            if (!mHasFooter && getItemCount() - 1 == position) {
                 return MORE_TYPE;
-            } else if (hasFooter && getItemCount() - 2 == position) {
+            } else if (mHasFooter && getItemCount() - 2 == position) {
                 return MORE_TYPE;
             }
         }
-        return getAttackItemViewType(hasHeader ? position - 1 : position);
+        return getAttackItemViewType(mHasHeader ? position - 1 : position);
     }
 
     /**
@@ -145,64 +164,64 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     protected RecyclerView.ViewHolder getMoreViewHolder(ViewGroup parent) {
-        if (null != customLoadMoreView) {
-            return new LoadMoreViewHolder(customLoadMoreView);
+        if (null != mCustomLoadMoreView) {
+            return new LoadMoreViewHolder(mCustomLoadMoreView);
         }
-        if (0 != loadMoreResourceId) {
-            this.customLoadMoreView = LayoutInflater.from(parent.getContext()).inflate(loadMoreResourceId, parent, false);
+        if (0 != mLoadMoreResId) {
+            mCustomLoadMoreView = LayoutInflater.from(parent.getContext()).inflate(mLoadMoreResId, parent, false);
         } else {
-            this.customLoadMoreView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_default_more_view, parent, false);
+            mCustomLoadMoreView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_default_more_view, parent, false);
         }
-        return new LoadMoreViewHolder(customLoadMoreView);
+        return new LoadMoreViewHolder(mCustomLoadMoreView);
     }
 
     protected RecyclerView.ViewHolder getHeaderViewHolder(ViewGroup parent) {
-        return new HeaderViewHolder(headerView);
+        return new HeaderViewHolder(mHeaderView);
     }
 
     protected RecyclerView.ViewHolder getFooterViewHolder(ViewGroup parent) {
-        return new FooterViewHolder(footerView);
+        return new FooterViewHolder(mFooterView);
     }
 
     public void setCustomLoadMoreView(View customView) {
-        loadMoreResourceId = 0;
-        customLoadMoreView = customView;
+        mLoadMoreResId = 0;
+        mCustomLoadMoreView = customView;
     }
 
     public void setCustomLoadMoreView(int resourceId) {
-        customLoadMoreView = null;
-        loadMoreResourceId = resourceId;
+        mCustomLoadMoreView = null;
+        mLoadMoreResId = resourceId;
     }
 
     public void setHeaderView(View headerView) {
-        this.headerView = headerView;
-        this.hasHeader = true;
+        this.mHeaderView = headerView;
+        this.mHasHeader = true;
     }
 
     public void removeHeaderView() {
-        this.headerView = null;
-        this.hasHeader = false;
+        this.mHeaderView = null;
+        this.mHasHeader = false;
         notifyDataSetChanged();
     }
 
     public void setFooterView(View footerView) {
-        this.footerView = footerView;
-        this.hasFooter = true;
+        this.mFooterView = footerView;
+        this.mHasFooter = true;
     }
 
     public void removeFooterView() {
-        this.footerView = null;
-        this.hasFooter = false;
+        this.mFooterView = null;
+        this.mHasFooter = false;
         notifyDataSetChanged();
     }
 
     public void setHasMore(boolean hasMore) {
-        this.hasMore = hasMore;
+        this.mHasMore = hasMore;
         notifyDataSetChanged();
     }
 
     public boolean hasMore() {
-        return this.hasMore;
+        return this.mHasMore;
     }
 
     /**
@@ -215,7 +234,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
      */
     public int getCustomHeaderNum() {
         int customHeaderNum = 0;
-        if (hasHeader) {
+        if (mHasHeader) {
             ++customHeaderNum;
         }
         return customHeaderNum;
@@ -228,9 +247,9 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
      */
     private int getCustomsNum() {
         int customs = 0;
-        customs = hasFooter ? ++customs : customs;
-        customs = hasHeader ? ++customs : customs;
-        customs = hasMore ? ++customs : customs;
+        customs = mHasFooter ? ++customs : customs;
+        customs = mHasHeader ? ++customs : customs;
+        customs = mHasMore ? ++customs : customs;
         return customs;
     }
 
@@ -333,15 +352,15 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void setItemClickSupport(ItemClickSupport itemClickSupport) {
-        this.itemClickSupport = itemClickSupport;
+        this.mItemClickSupport = itemClickSupport;
     }
 
     public boolean hasHeader() {
-        return hasHeader;
+        return mHasHeader;
     }
 
     public boolean hasFooter() {
-        return hasFooter;
+        return mHasFooter;
     }
 
     public void filterData(List<T> data) {
@@ -350,15 +369,15 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onClick(View v) {
-        if (null != itemClickSupport) {
-            itemClickSupport.onItemClick(v);
+        if (null != mItemClickSupport) {
+            mItemClickSupport.onItemClick(v);
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
-        if (null != itemClickSupport) {
-            return itemClickSupport.onItemLongClick(v);
+        if (null != mItemClickSupport) {
+            return mItemClickSupport.onItemLongClick(v);
         }
         return false;
     }
