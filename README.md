@@ -1,5 +1,7 @@
-TitanRecyclerView [![Build Status](https://api.travis-ci.org/youzan/TitanRecyclerView.svg)](https://travis-ci.org/youzan/TitanRecyclerView)
+TitanRecyclerView 
 ===
+
+[![Build Status](https://api.travis-ci.org/youzan/TitanRecyclerView.svg)](https://travis-ci.org/youzan/TitanRecyclerView)
 
 A **handy** RecyclerView can deal with all **headers**, **footers**, and **loading** shit.
 
