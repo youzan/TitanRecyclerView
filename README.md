@@ -1,12 +1,17 @@
 TitanRecyclerView [![Build Status](https://api.travis-ci.org/youzan/TitanRecyclerView.svg)](https://travis-ci.org/youzan/TitanRecyclerView)
 ===
 
-A VERY VERY powerfull extension for `RecyclerView`.
+A **handy** RecyclerView can deal with all **headers**, **footers**, and **loading** shit.
 
 Demo
 ---
 
-![](art/demo1.gif) ![](art/demo2.gif)
+### header view & footer view
+
+![](art/demo1.gif) 
+
+### load more
+![](art/demo2.gif)
 
 Dependencies
 ---
@@ -18,13 +23,11 @@ compile 'com.youzan:titan:0.1.0'
 Features
 ---
 
-### TitanRecyclerViev
-* Pull up to load more
-* Customize loading style
-* recyclerview scroll listener
-* One data source
-* add header view 
-* add footer view
+* Header View
+* Footer View
+* Load More
+* Customizable Loading Style
+* **More comming soon!**
 
 ## Usage
 
