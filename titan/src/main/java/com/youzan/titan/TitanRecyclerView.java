@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -141,6 +142,9 @@ public class TitanRecyclerView extends RecyclerView {
             mItemClickSupport = new ItemClickSupport(this, (TitanAdapter) adapter);
             mItemClickSupport.setOnItemClickListener(mOnItemClickListener);
             mItemClickSupport.setOnItemLongClickListener(mOnItemLongClickListener);
+            optimizeGridLayout(getLayoutManager());
+            setupLoadMore();
+            setupAdapter();
         }
     }
 
@@ -148,6 +152,8 @@ public class TitanRecyclerView extends RecyclerView {
     public void setLayoutManager(LayoutManager layout) {
         super.setLayoutManager(layout);
         optimizeGridLayout(layout);
+        setupLoadMore();
+        setupAdapter();
     }
 
     public void setOnLoadMoreListener(@NonNull OnLoadMoreListener onLoadMoreListener) {
@@ -158,7 +164,7 @@ public class TitanRecyclerView extends RecyclerView {
 
     public void setHasMore(boolean hasMore) {
         mHasMore = hasMore;
-        mTitanAdapter.setHasMore(hasMore);
+        setupAdapter();
     }
 
     public void setCustomLoadMoreView(View customView) {
@@ -274,6 +280,22 @@ public class TitanRecyclerView extends RecyclerView {
                 return flag ? ((GridLayoutManager) layoutManager).getSpanCount() : 1;
             }
         });
+    }
+
+    /**
+     * 处理水平loadmoreview
+     */
+    private void setupLoadMore() {
+
+        boolean isHorizonal = false;
+
+        if (getLayoutManager() instanceof LinearLayoutManager) {
+            isHorizonal = ((LinearLayoutManager) getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL;
+        } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            isHorizonal = ((StaggeredGridLayoutManager) getLayoutManager()).getOrientation() == StaggeredGridLayoutManager.HORIZONTAL;
+        }
+
+        mLoadMoreResourceId = R.layout.layout_default_more_view == mLoadMoreResourceId && isHorizonal ? R.layout.layout_default_horizontal_more_view : R.layout.layout_default_more_view;
     }
 }
 
