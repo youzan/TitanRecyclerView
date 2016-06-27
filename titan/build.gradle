@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "0.1.0"
+version = "0.1.1"
 
 android {
     compileSdkVersion 23
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 14
+        versionCode 15
         versionName version
     }
     buildTypes {
@@ -29,6 +29,8 @@ android {
 dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
 }
+
+apply from: "bintray.gradle"
 
 /*
 def siteUrl = "https://github.com/youzan/TitanRecyclerView"

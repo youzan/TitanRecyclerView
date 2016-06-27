@@ -23,7 +23,6 @@ import java.lang.annotation.RetentionPolicy;
  * TitanRecyclerView is beyond RecyclerView.
  *
  * @author monster @Hangzhou Youzan Technology Co.Ltd
- * @date 16/3/10
  */
 public class TitanRecyclerView extends RecyclerView {
 

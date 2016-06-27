@@ -1,9 +1,13 @@
 # Built application files
 *.apk
 *.ap_
-
+*.iml
 # Files for the Dalvik VM
 *.dex
+
+#maven config
+titan/project.properties
+titan/bintray.gradle
 
 # Java class files
 *.class

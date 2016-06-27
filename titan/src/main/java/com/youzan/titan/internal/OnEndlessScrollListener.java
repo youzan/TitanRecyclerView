@@ -55,7 +55,7 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
         int totalItemCount = layoutManager.getItemCount();
 
         if (mIsLoading) {
-            if (totalItemCount > mPreviousTotal) {
+            if (totalItemCount != mPreviousTotal) {
                 mIsLoading = false;
                 mPreviousTotal = totalItemCount;
             }
