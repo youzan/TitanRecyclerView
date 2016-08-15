@@ -176,10 +176,18 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     protected RecyclerView.ViewHolder getHeaderViewHolder(ViewGroup parent) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.
+                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mHeaderView.setLayoutParams(layoutParams);
         return new HeaderViewHolder(mHeaderView);
     }
 
     protected RecyclerView.ViewHolder getFooterViewHolder(ViewGroup parent) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.
+                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mFooterView.setLayoutParams(layoutParams);
         return new FooterViewHolder(mFooterView);
     }
 
