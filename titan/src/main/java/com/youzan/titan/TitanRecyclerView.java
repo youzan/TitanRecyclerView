@@ -145,6 +145,17 @@ public class TitanRecyclerView extends RecyclerView {
             optimizeGridLayout(getLayoutManager());
             setupLoadMore();
             setupAdapter();
+            adapter.registerAdapterDataObserver(new AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    //bug fixed
+                    //如果最后一次数据itemcount==第一次data.size+customview数量，则loadmore失败
+                    //这边这个判断为ture，则认为是刷新动作（只判断该bug的刷新动作），初始化mPreviousTotal
+                    if (getLayoutManager().getItemCount() == mOnEndlessScrollListener.mPreviousTotal) {
+                        mOnEndlessScrollListener.mPreviousTotal = 0;
+                    }
+                }
+            });
         }
     }
 

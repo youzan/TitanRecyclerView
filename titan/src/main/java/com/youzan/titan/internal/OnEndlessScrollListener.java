@@ -24,7 +24,7 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
     private boolean mIsNeedLoadData = false;
 
     // The total number of items in the dataset after the last load
-    private int mPreviousTotal = 0;
+    public int mPreviousTotal = 0;
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
