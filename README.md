@@ -19,7 +19,7 @@ Dependencies
 ---
 
 ```groovy
-compile 'com.youzan:titan:0.1.3'
+compile 'com.youzan:titan:0.2.0'
 ```
 
 Features
@@ -29,6 +29,7 @@ Features
 * Footer View
 * Load More
 * Customizable Loading Style
+* Empty View
 * **More comming soon!**
 
 ## Usage
@@ -89,6 +90,13 @@ public class ItemsAdapter extends TitanAdapter<DemoItem> {
       }
   }
 }
+```
+
+**Use `setEmptyView`.**
+
+```java
+//inflate ViewGroup use TitanRecyclerView
+mTitanAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.empty_view, mTitanRecyclerView, false));
 ```
 
 Acknowledgement

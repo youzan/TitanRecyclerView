@@ -278,15 +278,11 @@ public class TitanRecyclerView extends RecyclerView {
                 if (mTitanAdapter == null) {
                     return 0;
                 }
-
-                int itemCount = mTitanAdapter.getItemCount();
-                boolean flag = (mTitanAdapter.hasHeader() && 0 == position)
-                        || (mTitanAdapter.hasFooter() && 0 != position
-                        && itemCount - 1 == position)
-                        || (mHasMore && (!mTitanAdapter.hasFooter()
-                        && 0 != position && itemCount - 1 == position))
-                        || (mHasMore && (mTitanAdapter.hasFooter()
-                        && 0 != position && itemCount - 2 == position));
+                int viewType = mTitanAdapter.getItemViewType(position);
+                boolean flag = TitanAdapter.EMPTY_TYPE == viewType
+                        || TitanAdapter.FOOTER_TYPE == viewType
+                        || TitanAdapter.HEADER_TYPE == viewType
+                        || TitanAdapter.MORE_TYPE == viewType;
 
                 return flag ? ((GridLayoutManager) layoutManager).getSpanCount() : 1;
             }

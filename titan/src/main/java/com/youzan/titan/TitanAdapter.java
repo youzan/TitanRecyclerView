@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.youzan.titan.holder.AutoViewHolder;
 import com.youzan.titan.holder.FooterViewHolder;
 import com.youzan.titan.holder.HeaderViewHolder;
 import com.youzan.titan.internal.ItemClickSupport;
@@ -20,13 +21,19 @@ import java.util.List;
 public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
 
-    private final static int HEADER_TYPE = Integer.MIN_VALUE;
-    private final static int FOOTER_TYPE = Integer.MAX_VALUE - 1;
-    private final static int MORE_TYPE = Integer.MAX_VALUE;
+    public final static int HEADER_TYPE = Integer.MIN_VALUE;
+    public final static int FOOTER_TYPE = Integer.MAX_VALUE - 1;
+    public final static int MORE_TYPE = Integer.MAX_VALUE;
+    public final static int EMPTY_TYPE = Integer.MAX_VALUE - 2;
 
     private View mCustomLoadMoreView;
     private View mHeaderView;
     private View mFooterView;
+    private View mEmptyView;
+
+    private boolean mIsHeadViewEmpty = false;
+    private boolean mIsFootViewEmpty = false;
+    private boolean mIsEmptyViewEnable = false;
 
     @LayoutRes private int mLoadMoreResId;
 
@@ -75,14 +82,22 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
-        if (MORE_TYPE == viewType) {
-            return getMoreViewHolder(parent);
-        } else if (HEADER_TYPE == viewType) {
-            return getHeaderViewHolder(parent);
-        } else if (FOOTER_TYPE == viewType) {
-            return getFooterViewHolder(parent);
-        } else {
-            holder = createVHolder(parent, viewType);
+        switch (viewType) {
+            case MORE_TYPE:
+                holder = getMoreViewHolder(parent);
+                break;
+            case HEADER_TYPE:
+                holder = getHeaderViewHolder(parent);
+                break;
+            case FOOTER_TYPE:
+                holder = getFooterViewHolder(parent);
+                break;
+            case EMPTY_TYPE:
+                holder = new AutoViewHolder(mEmptyView);
+                break;
+            default:
+                holder = createVHolder(parent, viewType);
+                break;
         }
         return holder;
     }
@@ -93,16 +108,24 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof LoadMoreViewHolder) {
-            holder.itemView.setVisibility(getItemCount() > getCustomsNum() && mHasMore ? View.VISIBLE : View.GONE);
-        } else if (holder instanceof HeaderViewHolder) {
-            holder.itemView.setVisibility(mHasHeader ? View.VISIBLE : View.GONE);
-        } else if (holder instanceof FooterViewHolder) {
-            holder.itemView.setVisibility(mHasFooter ? View.VISIBLE : View.GONE);
-        } else {
-            holder.itemView.setOnClickListener(this);
-            holder.itemView.setOnLongClickListener(this);
-            showItemView(holder, mHasHeader ? position - 1 : position);
+        int viewType = holder.getItemViewType();
+        switch (viewType) {
+            case MORE_TYPE:
+                holder.itemView.setVisibility(getItemCount() > getCustomsNum() && mHasMore ? View.VISIBLE : View.GONE);
+                break;
+            case HEADER_TYPE:
+                holder.itemView.setVisibility(mHasHeader ? View.VISIBLE : View.GONE);
+                break;
+            case FOOTER_TYPE:
+                holder.itemView.setVisibility(mHasFooter ? View.VISIBLE : View.GONE);
+                break;
+            case EMPTY_TYPE:
+                break;
+            default:
+                holder.itemView.setOnClickListener(this);
+                holder.itemView.setOnLongClickListener(this);
+                showItemView(holder, mHasHeader ? position - 1 : position);
+                break;
         }
     }
 
@@ -118,6 +141,17 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         if (mHasFooter) {
             customTypeCount++;
         }
+
+        if (0 == mData.size() && mIsEmptyViewEnable) {
+            customTypeCount = 1;
+            if (!mIsFootViewEmpty && mHasFooter) {
+                customTypeCount++;
+            }
+            if (!mIsHeadViewEmpty && mHasHeader) {
+                customTypeCount++;
+            }
+        }
+
         return getAdapterItemCount() + customTypeCount;
     }
 
@@ -135,22 +169,66 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemViewType(int position) {
-        if (mHasHeader && 0 == position) {
-            return HEADER_TYPE;
-        }
 
-        if (mHasFooter && getItemCount() - 1 == position) {
-            return FOOTER_TYPE;
-        }
+        boolean isDataEmpty = 0 == mData.size();
 
-        if (mHasMore) {
-            if (!mHasFooter && getItemCount() - 1 == position) {
-                return MORE_TYPE;
-            } else if (mHasFooter && getItemCount() - 2 == position) {
-                return MORE_TYPE;
+        if (mIsEmptyViewEnable && isDataEmpty) {
+
+            if (!mIsHeadViewEmpty && mHasHeader && 0 == position) {
+                return HEADER_TYPE;
+            }
+
+            if (!mIsFootViewEmpty && mHasFooter && getItemCount() - 1 == position) {
+                return FOOTER_TYPE;
+            }
+
+            return EMPTY_TYPE;
+
+        } else {
+
+            if (mHasHeader && 0 == position) {
+                return HEADER_TYPE;
+            }
+
+            if (mHasFooter && getItemCount() - 1 == position) {
+                return FOOTER_TYPE;
+            }
+
+            if (mHasMore && !isDataEmpty) {
+                if (!mHasFooter && getItemCount() - 1 == position) {
+                    return MORE_TYPE;
+                } else if (mHasFooter && getItemCount() - 2 == position) {
+                    return MORE_TYPE;
+                }
             }
         }
+
         return getAttackItemViewType(mHasHeader ? position - 1 : position);
+    }
+
+    /**
+     * 设置emptyView
+     * @param isHeadViewEmpty is headerview empty that show emptyview
+     * @param isFootViewEmpty is footerview empty that show emptyview
+     * @param emptyView custom empty view
+     */
+    public void setEmptyView(boolean isHeadViewEmpty, boolean isFootViewEmpty, View emptyView) {
+        mIsHeadViewEmpty = isHeadViewEmpty;
+        mIsFootViewEmpty = isFootViewEmpty;
+        mEmptyView = emptyView;
+        mIsEmptyViewEnable = true;
+    }
+
+    /**
+     * 设置emptyView isHeadViewEmpty and isFootViewEmpty is true
+     * @param emptyView
+     */
+    public void setEmptyView(View emptyView) {
+        setEmptyView(true, true, emptyView);
+    }
+
+    public View getEmptyView() {
+        return mEmptyView;
     }
 
     /**
@@ -258,6 +336,11 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         customs = mHasFooter ? ++customs : customs;
         customs = mHasHeader ? ++customs : customs;
         customs = mHasMore ? ++customs : customs;
+        if (0 == mData.size() && mIsEmptyViewEnable) {
+            customs = 1;
+            customs = mHasFooter && !mIsFootViewEmpty ? ++customs : customs;
+            customs = mHasHeader && !mIsHeadViewEmpty ? ++customs : customs;
+        }
         return customs;
     }
 
