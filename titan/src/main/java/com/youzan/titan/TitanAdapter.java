@@ -132,7 +132,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     @Override
     public int getItemCount() {
         int customTypeCount = 0;
-        if (mHasMore) {
+        if (mHasMore && null != mData && 0 < mData.size()) {
             customTypeCount++;
         }
         if (mHasHeader) {
@@ -142,7 +142,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             customTypeCount++;
         }
 
-        if (null != mData && 0 == mData.size() && mIsEmptyViewEnable) {
+        if ((null == mData || 0 == mData.size()) && mIsEmptyViewEnable) {
             customTypeCount = 1;
             if (!mIsFootViewEmpty && mHasFooter) {
                 customTypeCount++;
@@ -336,7 +336,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         customs = mHasFooter ? ++customs : customs;
         customs = mHasHeader ? ++customs : customs;
         customs = mHasMore ? ++customs : customs;
-        if (null != mData && 0 == mData.size() && mIsEmptyViewEnable) {
+        if ((null == mData || 0 == mData.size()) && mIsEmptyViewEnable) {
             customs = 1;
             customs = mHasFooter && !mIsFootViewEmpty ? ++customs : customs;
             customs = mHasHeader && !mIsHeadViewEmpty ? ++customs : customs;
