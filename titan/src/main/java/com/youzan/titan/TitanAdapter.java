@@ -142,7 +142,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             customTypeCount++;
         }
 
-        if (0 == mData.size() && mIsEmptyViewEnable) {
+        if (null != mData && 0 == mData.size() && mIsEmptyViewEnable) {
             customTypeCount = 1;
             if (!mIsFootViewEmpty && mHasFooter) {
                 customTypeCount++;
