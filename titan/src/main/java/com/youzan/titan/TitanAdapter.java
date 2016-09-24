@@ -362,7 +362,9 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void addDataEnd(List<T> data) {
-        if (data != null && null != mData && data.size() > 0 && data != this.mData) {
+        if (null == mData) {
+            setData(data);
+        } else if (data != null && data.size() > 0 && data != this.mData) {
             int startIndex = this.mData.size();
             this.mData.addAll(data);
             filterData(this.mData);
@@ -371,7 +373,9 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void addDataTop(List<T> data) {
-        if (null != data && null != mData && 0 < data.size() && data != this.mData) {
+        if (null == mData) {
+            setData(data);
+        } else if (null != data && 0 < data.size() && data != this.mData) {
             this.mData.addAll(0, data);
             filterData(mData);
             notifyItemRangeInserted(getCustomHeaderNum(), data.size());
