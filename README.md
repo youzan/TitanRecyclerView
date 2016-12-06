@@ -19,7 +19,7 @@ Dependencies
 ---
 
 ```groovy
-compile 'com.youzan:titan:0.2.5'
+compile 'com.youzan:titan:0.3.0'
 ```
 
 Features
@@ -98,6 +98,10 @@ public class ItemsAdapter extends TitanAdapter<DemoItem> {
 //inflate ViewGroup use TitanRecyclerView
 mTitanAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.empty_view, mTitanRecyclerView, false));
 ```
+
+**Use `setOnScrolledListener`.**
+
+* can listener Titan scroll
 
 Acknowledgement
 ---

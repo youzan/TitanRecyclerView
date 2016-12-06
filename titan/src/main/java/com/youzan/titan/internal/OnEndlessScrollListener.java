@@ -26,6 +26,8 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
     // The total number of items in the dataset after the last load
     public int mPreviousTotal = 0;
 
+    private boolean mIsScrollToBottom = false;
+
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
@@ -44,6 +46,8 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
                     "Valid ones are LinearLayoutManager, " +
                     "GridLayoutManager and StaggeredGridLayoutManager");
         }
+
+        mIsScrollToBottom = dy > 0;
     }
 
     @Override
@@ -62,7 +66,7 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
         }
 
         if (!mIsLoading && (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                (mLastVisibleItemPos) >= totalItemCount - 1)) {
+                (mLastVisibleItemPos) >= totalItemCount - 1) && mIsScrollToBottom) {
             mIsLoading = true;
             onLoadMore();
         }

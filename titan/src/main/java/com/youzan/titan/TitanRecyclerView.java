@@ -47,8 +47,13 @@ public class TitanRecyclerView extends RecyclerView {
         void onStateChanged(int newState);
     }
 
+    public interface OnScrolledListener {
+        void onScrolled(RecyclerView recyclerView, int dx, int dy);
+    }
+
     private OnEndlessScrollListener mOnEndlessScrollListener;
     private OnLoadMoreListener mOnLoadMoreListener;
+    private OnScrolledListener mOnScrolledListener;
     private TitanAdapter mTitanAdapter;
     private OnScrollStateChangedListener mOnScrollStateChangedListener;
     private ItemClickSupport mItemClickSupport;
@@ -118,6 +123,14 @@ public class TitanRecyclerView extends RecyclerView {
                     mOnScrollStateChangedListener.onStateChanged(newState);
                 }
             }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (null != mOnScrolledListener) {
+                    mOnScrolledListener.onScrolled(recyclerView, dx, dy);
+                }
+            }
         };
         addOnScrollListener(mOnEndlessScrollListener);
     }
@@ -171,6 +184,11 @@ public class TitanRecyclerView extends RecyclerView {
         mHasMore = true;
         mOnLoadMoreListener = onLoadMoreListener;
         setupAdapter();
+    }
+
+    public void setOnScrolledListener(@NonNull OnScrolledListener onScrolledListener) {
+        mOnScrolledListener = onScrolledListener;
+        addEndlessScrollListener();
     }
 
     public void setHasMore(boolean hasMore) {
