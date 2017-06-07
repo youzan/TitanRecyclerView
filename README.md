@@ -19,7 +19,7 @@ Dependencies
 ---
 
 ```groovy
-compile 'com.youzan:titan:0.3.0'
+compile 'com.youzan:titan:0.3.1'
 ```
 
 Features

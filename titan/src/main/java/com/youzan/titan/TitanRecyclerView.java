@@ -208,7 +208,7 @@ public class TitanRecyclerView extends RecyclerView {
         setupAdapter();
     }
 
-    public void setOnItemClickListener(@NonNull ItemClickSupport.OnItemClickListener
+    public void setOnItemClickListener(ItemClickSupport.OnItemClickListener
                                                onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
         if (mItemClickSupport != null) {
@@ -216,7 +216,7 @@ public class TitanRecyclerView extends RecyclerView {
         }
     }
 
-    public void setOnItemLongClickListener(@NonNull ItemClickSupport.OnItemLongClickListener
+    public void setOnItemLongClickListener(ItemClickSupport.OnItemLongClickListener
                                                    onItemLongClickListener) {
         mOnItemLongClickListener = onItemLongClickListener;
         if (mItemClickSupport != null) {

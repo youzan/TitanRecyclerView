@@ -30,15 +30,11 @@ public class ItemClickSupport {
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        if (null != onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        if (null != onItemLongClickListener) {
-            this.onItemLongClickListener = onItemLongClickListener;
-        }
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
     public void onItemClick(View v) {
