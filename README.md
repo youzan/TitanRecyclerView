@@ -19,7 +19,7 @@ Dependencies
 ---
 
 ```groovy
-compile 'com.youzan:titan:0.3.1'
+compile 'com.youzan:titan:0.4.0'
 ```
 
 Features
@@ -98,6 +98,7 @@ public class ItemsAdapter extends TitanAdapter<DemoItem> {
 //inflate ViewGroup use TitanRecyclerView
 mTitanAdapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.empty_view, mTitanRecyclerView, false));
 ```
+* add setDefaultView, setBadNetView. use them for net status and others
 
 **Use `setOnScrolledListener`.**
 

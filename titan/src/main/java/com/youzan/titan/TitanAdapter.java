@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.youzan.titan.holder.AutoViewHolder;
+import com.youzan.titan.holder.EmptyViewHolder;
 import com.youzan.titan.holder.FooterViewHolder;
 import com.youzan.titan.holder.HeaderViewHolder;
 import com.youzan.titan.internal.ItemClickSupport;
@@ -21,21 +22,25 @@ import java.util.List;
 public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
 
-    public final static int HEADER_TYPE = Integer.MIN_VALUE;
-    public final static int FOOTER_TYPE = Integer.MAX_VALUE - 1;
-    public final static int MORE_TYPE = Integer.MAX_VALUE;
-    public final static int EMPTY_TYPE = Integer.MAX_VALUE - 2;
+    final static int HEADER_TYPE = Integer.MIN_VALUE;
+    final static int FOOTER_TYPE = Integer.MAX_VALUE - 1;
+    final static int MORE_TYPE = Integer.MAX_VALUE;
+    final static int EMPTY_TYPE = Integer.MAX_VALUE - 2;
 
     private View mCustomLoadMoreView;
     private View mHeaderView;
     private View mFooterView;
     private View mEmptyView;
+    private View mDefaultView;
+    private View mBadNetView;
+    private View mEmptyHolderView;
 
     private boolean mIsHeadViewEmpty = false;
     private boolean mIsFootViewEmpty = false;
     private boolean mIsEmptyViewEnable = false;
 
-    @LayoutRes private int mLoadMoreResId;
+    @LayoutRes
+    private int mLoadMoreResId;
 
     private boolean mHasMore;
     private boolean mHasHeader;
@@ -47,7 +52,8 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     /**
      * Create view holder according to view types.
-     * @param parent the parent view group
+     *
+     * @param parent   the parent view group
      * @param viewType the view type
      * @return the created view holder
      */
@@ -55,20 +61,23 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     /**
      * Show item view.
-     * @param holder the view holder
+     *
+     * @param holder   the view holder
      * @param position the position of the view holder
      */
     protected abstract void showItemView(RecyclerView.ViewHolder holder, int position);
 
     /**
      * Get adpater item id by position.
+     *
      * @param position item position
      * @return adapter item id
      */
     public abstract long getAdapterItemId(int position);
 
     /**
-     *  Get the count of adapter items.
+     * Get the count of adapter items.
+     *
      * @return the count of adapter items
      */
     public int getAdapterItemCount() {
@@ -93,7 +102,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 holder = getFooterViewHolder(parent);
                 break;
             case EMPTY_TYPE:
-                holder = new AutoViewHolder(mEmptyView);
+                holder = new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_default_empty_view, parent, false));
                 break;
             default:
                 holder = createVHolder(parent, viewType);
@@ -120,6 +129,10 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 holder.itemView.setVisibility(mHasFooter ? View.VISIBLE : View.GONE);
                 break;
             case EMPTY_TYPE:
+                ((EmptyViewHolder) holder).container.removeAllViews();
+                ((EmptyViewHolder) holder).container.getLayoutParams().height = mEmptyHolderView.getLayoutParams().height;
+                ((EmptyViewHolder) holder).container.getLayoutParams().width = mEmptyHolderView.getLayoutParams().width;
+                ((EmptyViewHolder) holder).container.addView(mEmptyHolderView);
                 break;
             default:
                 holder.itemView.setOnClickListener(this);
@@ -183,7 +196,6 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             }
 
             return EMPTY_TYPE;
-
         } else {
 
             if (mHasHeader && 0 == position) {
@@ -208,19 +220,21 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     /**
      * 设置emptyView
+     * 优先级 default empty badNet
+     *
      * @param isHeadViewEmpty is headerview empty that show emptyview
      * @param isFootViewEmpty is footerview empty that show emptyview
-     * @param emptyView custom empty view
+     * @param emptyView       custom empty view
      */
     public void setEmptyView(boolean isHeadViewEmpty, boolean isFootViewEmpty, View emptyView) {
-        mIsHeadViewEmpty = isHeadViewEmpty;
-        mIsFootViewEmpty = isFootViewEmpty;
         mEmptyView = emptyView;
-        mIsEmptyViewEnable = true;
+        initEmptyParams(isHeadViewEmpty, isFootViewEmpty);
     }
 
     /**
      * 设置emptyView isHeadViewEmpty and isFootViewEmpty is true
+     * 优先级 default empty badNet
+     *
      * @param emptyView
      */
     public void setEmptyView(View emptyView) {
@@ -229,6 +243,92 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     public View getEmptyView() {
         return mEmptyView;
+    }
+
+    public void showEmptyView() {
+        mEmptyHolderView = mEmptyView;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 设置defaultView
+     * 优先级 default empty badNet
+     *
+     * @param isHeadViewEmpty
+     * @param isFootViewEmpty
+     * @param defaultView
+     */
+    public void setDefaultView(boolean isHeadViewEmpty, boolean isFootViewEmpty, View defaultView) {
+        mDefaultView = defaultView;
+        initEmptyParams(isHeadViewEmpty, isFootViewEmpty);
+    }
+
+    /**
+     * 设置defaultView
+     * 优先级 default empty badNet
+     *
+     * @param defaultView
+     */
+    public void setDefaultView(View defaultView) {
+        setDefaultView(true, true, defaultView);
+    }
+
+    public View getDefaultView() {
+        return mDefaultView;
+    }
+
+    public void showDefaultView() {
+        mEmptyHolderView = mDefaultView;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 设置badNetView
+     * 优先级 default empty badNet
+     *
+     * @param isHeadViewEmpty
+     * @param isFootViewEmpty
+     * @param badNetView
+     */
+    public void setBadNetView(boolean isHeadViewEmpty, boolean isFootViewEmpty, View badNetView) {
+        mBadNetView = badNetView;
+        initEmptyParams(isHeadViewEmpty, isFootViewEmpty);
+    }
+
+    /**
+     * 设置badNetView
+     * 优先级 default empty badNet
+     *
+     * @param badNetView
+     */
+    public void setBadNetView(View badNetView) {
+        setBadNetView(true, true, badNetView);
+    }
+
+    public View getBadNetView() {
+        return mBadNetView;
+    }
+
+    public void showBadNetView() {
+        mEmptyHolderView = mBadNetView;
+        notifyDataSetChanged();
+    }
+
+    private void initEmptyParams(boolean isHeadViewEmpty, boolean isFootViewEmpty) {
+        mIsHeadViewEmpty = isHeadViewEmpty;
+        mIsFootViewEmpty = isFootViewEmpty;
+        mIsEmptyViewEnable = true;
+        initEmptyHolderView();
+    }
+
+    private void initEmptyHolderView() {
+        if (null != mDefaultView) {
+            mEmptyHolderView = mDefaultView;
+        } else if (null != mEmptyView) {
+            mEmptyHolderView = mEmptyView;
+        } else if (null != mBadNetView) {
+            mEmptyHolderView = mBadNetView;
+        }
     }
 
     /**
@@ -434,7 +534,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         return mData;
     }
 
-    public void setData(@NonNull  List<T> data) {
+    public void setData(@NonNull List<T> data) {
         mData = data;
         notifyDataSetChanged();
     }
