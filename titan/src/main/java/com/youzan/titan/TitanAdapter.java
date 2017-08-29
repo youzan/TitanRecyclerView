@@ -354,18 +354,18 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     }
 
     protected RecyclerView.ViewHolder getHeaderViewHolder(ViewGroup parent) {
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.
-                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        mHeaderView.setLayoutParams(layoutParams);
+
+        if (null == mHeaderView.getLayoutParams()) {
+            setViewGroupLp(mHeaderView);
+        }
         return new HeaderViewHolder(mHeaderView);
     }
 
     protected RecyclerView.ViewHolder getFooterViewHolder(ViewGroup parent) {
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.
-                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        mFooterView.setLayoutParams(layoutParams);
+
+        if (null == mFooterView.getLayoutParams()) {
+            setViewGroupLp(mFooterView);
+        }
         return new FooterViewHolder(mFooterView);
     }
 
@@ -379,6 +379,11 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         mLoadMoreResId = resourceId;
     }
 
+    /**
+     * use TitanRecyclerView as root(ViewGroup)
+     *
+     * @param headerView
+     */
     public void setHeaderView(View headerView) {
         this.mHeaderView = headerView;
         this.mHasHeader = true;
@@ -390,6 +395,11 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
+    /**
+     * use TitanRecyclerView as root(ViewGroup)
+     *
+     * @param footerView
+     */
     public void setFooterView(View footerView) {
         this.mFooterView = footerView;
         this.mHasFooter = true;
@@ -575,5 +585,12 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             return mItemClickSupport.onItemLongClick(v);
         }
         return false;
+    }
+
+    private void setViewGroupLp(View view) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.
+                LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(layoutParams);
     }
 }
