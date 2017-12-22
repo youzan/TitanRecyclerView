@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.youzan.titan.holder.AutoViewHolder;
 import com.youzan.titan.holder.EmptyViewHolder;
-import com.youzan.titan.holder.FooterViewHolder;
 import com.youzan.titan.holder.HeaderViewHolder;
-import com.youzan.titan.internal.ItemClickSupport;
 import com.youzan.titan.holder.LoadMoreViewHolder;
+import com.youzan.titan.internal.ItemClickSupport;
 
 import java.util.List;
 
@@ -99,7 +97,7 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 holder = getHeaderViewHolder(parent);
                 break;
             case FOOTER_TYPE:
-                holder = getFooterViewHolder(parent);
+                holder = new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_default_empty_view, parent, false));
                 break;
             case EMPTY_TYPE:
                 holder = new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_default_empty_view, parent, false));
@@ -126,7 +124,16 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 holder.itemView.setVisibility(mHasHeader ? View.VISIBLE : View.GONE);
                 break;
             case FOOTER_TYPE:
-                holder.itemView.setVisibility(mHasFooter ? View.VISIBLE : View.GONE);
+                if (mHasFooter && !mHasMore) {
+                    ((EmptyViewHolder) holder).container.removeAllViews();
+                    ((EmptyViewHolder) holder).container.getLayoutParams().height = mFooterView.getLayoutParams().height;
+                    ((EmptyViewHolder) holder).container.getLayoutParams().width = mFooterView.getLayoutParams().width;
+                    ((EmptyViewHolder) holder).container.addView(mFooterView);
+                } else {
+                    ((EmptyViewHolder) holder).container.removeAllViews();
+                    ((EmptyViewHolder) holder).container.getLayoutParams().height = 0;
+                    ((EmptyViewHolder) holder).container.getLayoutParams().width = 0;
+                }
                 break;
             case EMPTY_TYPE:
                 ((EmptyViewHolder) holder).container.removeAllViews();
@@ -359,14 +366,6 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             setViewGroupLp(mHeaderView);
         }
         return new HeaderViewHolder(mHeaderView);
-    }
-
-    protected RecyclerView.ViewHolder getFooterViewHolder(ViewGroup parent) {
-
-        if (null == mFooterView.getLayoutParams()) {
-            setViewGroupLp(mFooterView);
-        }
-        return new FooterViewHolder(mFooterView);
     }
 
     public void setCustomLoadMoreView(View customView) {

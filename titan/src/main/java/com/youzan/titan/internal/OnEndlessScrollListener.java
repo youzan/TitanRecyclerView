@@ -66,7 +66,7 @@ public abstract class OnEndlessScrollListener extends RecyclerView.OnScrollListe
         }
 
         if (!mIsLoading && (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                (mLastVisibleItemPos) >= totalItemCount - 1) && mIsScrollToBottom) {
+                (mLastVisibleItemPos) >= totalItemCount - 2) && mIsScrollToBottom) {
             mIsLoading = true;
             onLoadMore();
         }
