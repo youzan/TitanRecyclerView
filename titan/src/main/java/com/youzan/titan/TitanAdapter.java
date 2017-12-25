@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.youzan.titan.holder.EmptyViewHolder;
 import com.youzan.titan.holder.HeaderViewHolder;
@@ -137,6 +138,9 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 break;
             case EMPTY_TYPE:
                 ((EmptyViewHolder) holder).container.removeAllViews();
+                if (null == mEmptyHolderView.getLayoutParams()) {
+                    mEmptyHolderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                }
                 ((EmptyViewHolder) holder).container.getLayoutParams().height = mEmptyHolderView.getLayoutParams().height;
                 ((EmptyViewHolder) holder).container.getLayoutParams().width = mEmptyHolderView.getLayoutParams().width;
                 ((EmptyViewHolder) holder).container.addView(mEmptyHolderView);
@@ -400,6 +404,17 @@ public abstract class TitanAdapter<T> extends RecyclerView.Adapter<RecyclerView.
      * @param footerView
      */
     public void setFooterView(View footerView) {
+        setFooterView(footerView, LinearLayout.VERTICAL);
+    }
+
+    public void setFooterView(View footerView, int orientation) {
+        if (null == footerView.getLayoutParams()) {
+            if (LinearLayout.VERTICAL == orientation) {
+                footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            } else {
+                footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+        }
         this.mFooterView = footerView;
         this.mHasFooter = true;
     }

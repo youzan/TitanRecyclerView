@@ -6,7 +6,7 @@
 
     <TextView
         android:textSize="48sp"
-        android:text="Empty"
+        android:text="Default"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -66,8 +66,8 @@ public class MultipleHeaderBottomFragment extends Fragment {
             mAttackView.setLayoutManager(new LinearLayoutManager(getActivity()));//这里用线性显示 类似于list view
         }
         mAdapter = new HeaderBottomItemAdapter(getActivity());
-        mAdapter.setHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.item_image, null));
-        mAdapter.setFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.item_image, null));
+        mAdapter.setHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.item_image, mAttackView, false));
+        mAdapter.setFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.item_image, mAttackView, false));
         mAttackView.setAdapter(mAdapter);
     }
 

@@ -13,13 +13,19 @@
             android:id="@+id/add_item_listener"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="add item listener" />
+            android:text="showEmpty" />
 
         <Button
             android:id="@+id/clear_item_listener"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="clear item listener" />
+            android:text="showDefault" />
+
+        <Button
+            android:id="@+id/show_bad_net"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="showBadNet" />
 
     </LinearLayout>
 

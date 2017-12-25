@@ -1,7 +1,21 @@
-<com.youzan.titan.TitanRecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/titan_recycler_view"
-    android:layout_centerVertical="true"
-    android:layout_centerHorizontal="true"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.youzan.titan.TitanRecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/titan_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

@@ -25,9 +25,9 @@ public class NormalRecyclerViewAdapter extends TitanAdapter<String> {
     public NormalRecyclerViewAdapter(Context context) {
         mTitles = context.getResources().getStringArray(R.array.titles);
         mData = new ArrayList<>();
-        for (String str: mTitles) {
-            mData.add(str);
-        }
+//        for (String str: mTitles) {
+//            mData.add(str);
+//        }
         mLayoutInflater = LayoutInflater.from(context);
     }
 

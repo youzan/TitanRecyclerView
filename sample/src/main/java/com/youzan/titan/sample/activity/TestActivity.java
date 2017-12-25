@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,18 +36,26 @@ public class TestActivity extends Activity implements ItemClickSupport.OnItemCli
 
         Button btnAdd = (Button) findViewById(R.id.add_item_listener);
         Button btnClear = (Button) findViewById(R.id.clear_item_listener);
+        Button badNet = (Button) findViewById(R.id.show_bad_net);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                titan.setOnItemClickListener(TestActivity.this);
+                adapter.showEmptyView();
             }
         });
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                titan.setOnItemClickListener(null);
+                adapter.showDefaultView();
+            }
+        });
+
+        badNet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.showBadNetView();
             }
         });
 
@@ -64,7 +73,11 @@ public class TestActivity extends Activity implements ItemClickSupport.OnItemCli
         List<String> data = new ArrayList<>();
         Collections.addAll(data, strs);
 
-        adapter.setData(data);
+        adapter.setBadNetView(LayoutInflater.from(this).inflate(R.layout.bad_net_view, titan, false));
+        adapter.setDefaultView(LayoutInflater.from(this).inflate(R.layout.default_view, titan, false));
+        adapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, titan, false));
+
+//        adapter.setData(data);
     }
 
     @Override

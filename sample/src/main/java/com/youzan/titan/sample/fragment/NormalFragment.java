@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 
 import com.youzan.titan.TitanAdapter;
 import com.youzan.titan.TitanRecyclerView;
-import com.youzan.titan.sample.adapter.NormalRecyclerViewAdapter;
 import com.youzan.titan.sample.R;
+import com.youzan.titan.sample.adapter.NormalRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +82,20 @@ public class NormalFragment extends Fragment {
             });
         }
         mAttackview.setItemAnimator(new DefaultItemAnimator());
+        mTitanAdapter.setFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.footer_view, null));
+
+        int index = mTitanAdapter.getData().size();
+        int end = index + 20;
+        List<String> datas = new ArrayList<String>();
+        for (int i = index; i < end; i++) {
+            datas.add("item" + i);
+        }
+        mTitanAdapter.addDataEnd(datas);
     }
 
     private void loadItem() {
         Log.e("AttackView", "loadNums:" + loadNums);
-        if (loadNums < 5) {
+        if (loadNums < 3) {
             loadNums++;
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -99,7 +108,7 @@ public class NormalFragment extends Fragment {
                     }
                     mTitanAdapter.addDataEnd(datas);
                 }
-            }, 5000);
+            }, 3000);
         } else {
             mTitanAdapter.setHasMore(false);
         }
